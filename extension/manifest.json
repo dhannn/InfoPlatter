@@ -1,0 +1,41 @@
+{
+    "manifest_version": 3,
+    "name": "InfoPlatter",
+    "version": "1.0.0",
+    "description": "Watch your information diet!",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://localhost:3000/*",
+        "https://twitter.com/*",
+        "https://x.com/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                
+                "https://twitter.com/*",
+                "https://x.com/*"
+            ],
+            "js": ["content-scripts/twitter.js"],
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "http://localhost:3000/"
+            ],
+            "js": ["content-scripts/dashboard.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "InfoPlatter | Watch your info diet!"
+    }
+}
