@@ -28,7 +28,7 @@
         },
         {
             "matches": [
-                "http://localhost:3000/"
+                "http://localhost:3000/dashboard"
             ],
             "js": ["content-scripts/dashboard.js"],
             "run_at": "document_end"

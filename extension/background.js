@@ -15,13 +15,13 @@ chrome.runtime.onInstalled.addListener(() => {
 })
 
 // Listen for messages from content scripts
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     switch (message.type) {
         case 'CAPTURE_DATA':            
             handleDataCapture(message.data);
             sendResponse({ success: true });
             break;
-    
+        
         default:
             sendResponse({ error: 'Unknown message type' });
             break;
@@ -48,10 +48,17 @@ function handleDataCapture(data) {
     console.log('Data captured:', enrichedData);
 }
 
+async function getArtifacts() {
+    const result = await chrome.storage.local.get(['artifacts']);
+    const existingData = result.artifacts || [];
+
+    return existingData;
+}
+
 async function storeData(data) {
     try {
-        const result = await chrome.storage.local.get(['socialMediaData']);
-        const existingData = result.socialMediaData || [];
+        const result = await chrome.storage.local.get(['artifacts']);
+        const existingData = result.artifacts || [];
         
         existingData.push(data);
         
@@ -59,7 +66,7 @@ async function storeData(data) {
         const limitedData = existingData.slice(-1000);
         
         await chrome.storage.local.set({
-            socialMediaData: limitedData
+            artifacts: limitedData
         });
         
     } catch (error) {
