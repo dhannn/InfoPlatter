@@ -10,13 +10,14 @@ export default function Artifact({ artifact, onDelete }) {
 				<div style={{ color: '#0070f3', fontSize: 13 }}>Media attached ({artifact.mediaCount})</div>
 			)}
 			<div style={{ fontSize: 13, color: "#555", margin: "8px 0" }}>
+				<p style={{ marginRight: 12 }}>Source URL: {artifact.url}</p>
 				<span>Likes: {artifact.likes}</span> | <span>Comments: {artifact.comments}</span> | <span>Shares: {artifact.shares}</span>
 			</div>
 			<div style={{ fontSize: 12, color: "#888" }}>
 				<span>Time spent: {artifact.timeSpent?.toFixed(2)}s</span>
 			</div>
 			<div style={{ marginTop: 8 }}>
-				<a href={artifact.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0070f3', textDecoration: 'underline', marginRight: 12 }}>View Original</a>
+				<a href={artifact.tweetLink} target="_blank" rel="noopener noreferrer" style={{ color: '#0070f3', textDecoration: 'underline', marginRight: 12 }}>View Original</a>
 				<button onClick={() => onDelete(artifact.id)} style={{ background: '#ff4d4f', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer' }}>Delete</button>
 			</div>
 		</div>

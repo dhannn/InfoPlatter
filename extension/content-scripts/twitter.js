@@ -118,11 +118,19 @@
             const timeElement = tweetElement.querySelector('time');
             const timestamp = timeElement ? timeElement.getAttribute('datetime') : new Date().toISOString();
             
-            // Extract media info
-            const images = tweetElement.querySelectorAll('[data-testid="tweetPhoto"] img').length;
-            const videos = tweetElement.querySelectorAll('video').length;
-            const hasMedia = images > 0 || videos > 0;
-            
+            // Extract tweet link
+            let tweetLink = '';
+            if (timeElement && timeElement.parentElement && timeElement.parentElement.tagName === 'A') {
+                tweetLink = timeElement.parentElement.href;
+            }
+
+            // Extract media info and links
+            const imageNodes = tweetElement.querySelectorAll('[data-testid="tweetPhoto"] img');
+            const videoNodes = tweetElement.querySelectorAll('video');
+            const images = Array.from(imageNodes).map(img => img.src || tweetLink);
+            const videos = Array.from(videoNodes).map(video => video.src || tweetLink);
+            const hasMedia = images.length > 0 || videos.length > 0;
+
             // Determine tweet type
             const isRetweet = tweetElement.querySelector('[data-testid="socialContext"]')?.innerText.includes('Retweeted');
             const isReply = tweetElement.querySelector('[data-testid="tweetText"]')?.innerText.startsWith('@');
@@ -144,7 +152,9 @@
                 shares: retweets,
                 comments: replies,
                 hasMedia: hasMedia,
-                mediaCount: images + videos,
+                mediaCount: images.length + videos.length,
+                mediaLinks: images.concat(videos),
+                tweetLink: tweetLink,
                 url: window.location.href,
                 timeSpent: timeSpent
             };      
