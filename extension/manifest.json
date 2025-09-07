@@ -28,7 +28,8 @@
         },
         {
             "matches": [
-                "http://localhost:3000/dashboard"
+                "http://localhost:3000/dashboard",
+                "https://infoplatter.vercel.app/dashboard"
             ],
             "js": ["content-scripts/dashboard.js"],
             "run_at": "document_end"
