@@ -28,7 +28,10 @@ export default function ArtifactList() {
 	};
 
 	if (!artifacts.length) {
-		return <div style={{ color: '#888', margin: '32px 0', textAlign: 'center' }}>No artifacts collected yet.</div>;
+		return <>
+			<h1 className='text-5xl font-bold'>Artifacts</h1>
+			<div style={{ color: '#888', margin: '32px 0', textAlign: 'center' }}>No artifacts collected yet.</div>;
+		</>
 	}
 
 	return (
