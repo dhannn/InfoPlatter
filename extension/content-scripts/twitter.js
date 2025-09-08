@@ -6,6 +6,7 @@
     let intersectionObserver = null;
     let tweetElements = new Set();
     let tweets = [];
+    const port = chrome.runtime.connect({ name: "tweet-tracker" });
     
     const parent = document.querySelector("body")
     
@@ -88,7 +89,7 @@
         const tweetData = extractTweetData(tweetElement);
         
         if (tweetData) {
-            await chrome.runtime.sendMessage({
+            await port.postMessage({
                 type: 'CAPTURE_DATA',
                 data: tweetData
             });

@@ -2,7 +2,7 @@ let isCapturing = false;
 let dev = false;
 
 // Initialize extension
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
     console.log('InfoPlatter browser extension installed');
 
     // Check if user has granted consent to mine data locally
@@ -14,6 +14,20 @@ chrome.runtime.onInstalled.addListener(() => {
     //     }
     // })
 });
+
+chrome.runtime.onConnect.addListener((port) => {
+    if (port.name === "tweet-tracker") {
+        port.onMessage.addListener((message) => {
+            if (message.type === "CAPTURE_DATA") {
+                // process and persist the data            
+                console.log("Got tweet data:", message.data);
+                handleDataCapture(message.data);
+                port.postMessage({ success: true });
+            }
+        });
+    }
+});
+
 
 // Listen for messages from content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
@@ -128,3 +142,15 @@ async function getStoredData() {
     }
 }
 
+chrome.alarms.create("heartbeat", { periodInMinutes: 0.5 });
+chrome.alarms.create("heartbeat2", { periodInMinutes: 0.5, delayInMinutes: 0.7});
+(async function() {
+
+    
+    chrome.alarms.onAlarm.addListener((alarm) => {
+        if (alarm.name === "heartbeat") {
+            console.log("Service worker woke up");
+        }
+    });
+})();
+    
