@@ -136,7 +136,7 @@ function setupEventListeners() {
     // Dashboard button
     dashboardBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        chrome.tabs.create({ url: 'http://localhost:3000' });
+        chrome.tabs.create({ url: 'https://infoplatter.vercel.app/dashboard' });
         window.close();
     });
 }
