@@ -1,4 +1,4 @@
-let isCapturing = true;
+let isCapturing = false;
 let dev = false;
 
 // Initialize extension
@@ -6,24 +6,42 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log('InfoPlatter browser extension installed');
 
     // Check if user has granted consent to mine data locally
-    chrome.storage.local.get(['dataPerms'], (result) => {
-        if (!result.dataPerms) {
-            chrome.tabs.create({
-                url: dev? 'http://localhost:3000/dashboard': 'https://infoplatter.vercel.app/dashboard'
-            })
-        }
-    })
-})
+    // chrome.storage.local.get(['dataPerms'], (result) => {
+    //     if (!result.dataPerms) {
+    //         chrome.tabs.create({
+    //             url: dev? 'http://localhost:3000/dashboard': 'https://infoplatter.vercel.app/dashboard'
+    //         })
+    //     }
+    // })
+});
 
 // Listen for messages from content scripts
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
     switch (message.type) {
         case 'CAPTURE_DATA':            
             handleDataCapture(message.data);
             sendResponse({ success: true });
             break;
+      
+        case 'GET_CAPTURE_STATUS':
+            sendResponse({ isCapturing });
+            break;
         
+        case 'TOGGLE_CAPTURE':
+            toggleCapture(message.enabled);
+            sendResponse({ success: true });
+            break;
+            
+      
+        case 'GET_STORED_DATA':
+            getStoredData().then(data => {
+                sendResponse({ data });
+            });
+            return true;
+            
         default:
+            console.log('Unknown', message);
+            
             sendResponse({ error: 'Unknown message type' });
             break;
     }
@@ -74,3 +92,39 @@ async function storeData(data) {
         console.error('Failed to store data:', error);
     }
 }
+
+function toggleCapture(enabled) {
+    isCapturing = enabled;
+    
+    // Update icon to reflect status
+    const iconPath = enabled ? 'icons/icon-active' : 'icons/icon';
+    // chrome.action.setIcon({
+    //     path: {
+    //     "16": `${iconPath}16.png`,
+    //     "48": `${iconPath}48.png`,
+    //     "128": `${iconPath}128.png`
+    //     }
+    // });
+    
+    // Update badge
+    chrome.action.setBadgeText({
+        text: enabled ? 'ON' : 'OFF'
+    });
+    
+    chrome.action.setBadgeBackgroundColor({
+        color: enabled ? '#3BB273' : '#D62828'
+    });
+}
+
+
+async function getStoredData() {
+    try {
+        const result = await chrome.storage.local.get(['artifacts']);
+        console.log('Artifacts in storage:', result.artifacts); // Debugging log
+        return result.artifacts || [];
+    } catch (error) {
+        console.error('Failed to get stored data:', error);
+        return [];
+    }
+}
+

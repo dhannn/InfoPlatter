@@ -3,10 +3,204 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Social Media Data Collector</title>
+        <title>InfoPlatter | You are what you digest</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+        <style>
+            body {
+                width: 300px;
+                padding: 16px;
+                margin: 0;
+                font-family: 'Inter';
+                background-color: #F5FBEF;
+            }
+
+            .header {
+                border-bottom: 1px solid #e5e5e5;
+                padding: 16px;
+                display: flex;
+                align-items: center;
+            }
+
+            .header div {
+                margin-left: 12px;
+            }
+
+            .header p, .header h1 {
+                margin: 0;
+                letter-spacing: -0.05rem;
+                padding: 0;
+            }
+
+            .header p {
+                font-size: 0.7rem;
+                margin-top: -0.2rem;
+            }
+    
+            .status {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 16px;
+                padding: 12px;
+                border-radius: 6px;
+                background: #46494C22;
+            }
+    
+            .status.active {
+                background: #d4edda;
+                border: 1px solid #c3e6cb;
+            }
+            
+            .status.inactive {
+                background: #f8d7da;
+                border: 1px solid #f5c6cb;
+            }
+              
+            .status-text {
+                font-size: 14px;
+                font-weight: 500;
+            }
+            
+            .status.active .status-text {
+                color: #3BB273;
+            }
+            
+            .status.inactive .status-text {
+                color: #D62828;
+            }
+    
+            .toggle-btn {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 500;
+                background-color: #3BB273;
+                color: white;
+            }
+            
+            .toggle-btn.active {
+                background: #D62828;
+                color: white;
+            }
+            
+            .toggle-btn.inactive {
+                background: #3BB273;
+                color: white;
+            }
+    
+            .stats {
+                margin-bottom: 16px;
+            }
+            
+            .stat-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+            
+            .stat-item:last-child {
+                border-bottom: none;
+            }
+            
+            .stat-label {
+                color: #666;
+            }
+            
+            .stat-value {
+                font-weight: 500;
+                color: #333;
+            }
+    
+            .actions {
+                display: flex;
+                gap: 8px;
+            }
+    
+            .action-btn {
+                flex: 1;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: white;
+                cursor: pointer;
+                font-size: 12px;
+                text-align: center;
+                text-decoration: none;
+                color: #333;
+                transition: 0.1s;
+            }
+            
+            .action-btn:hover {
+                background: #f8f9fa;
+                transition: 0.1s;
+            }
+            
+            .action-btn.primary {
+                background: #3BB273;
+                color: white;
+                border-color: #3BB273;
+            }
+            
+            .action-btn.primary:hover {
+                background: #2c965d;
+            }
+            
+            .loading {
+                text-align: center;
+                padding: 20px;
+                color: #666;
+            }
+            
+        </style>
     </head>
 
     <body>
+        <div class='header'>
+            <img src='images/48x48.png'>
+            <div>
+                <h1><span style="color: #3BB273;">Info</span><span>Platter</span></h1>
+                <p class=''>You are what you <span style="color: #3BB273;">digest.</span></p>
+            </div>
+        </div>
+  
+        <div id="loading" class="loading">
+            Loading...
+        </div>
+
+        <div id='content'>
+            <div id='status' class='status'>
+                <div class='status-text'>Data Collection</div>
+                <button id='toggleBtn' class='toggle-btn'>Toggle</button>
+            </div>
+    
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Items Collected:</span>
+                    <span id="totalItems" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">This Session:</span>
+                    <span id="sessionItems" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Last Update:</span>
+                    <span id="lastUpdate" class="stat-value">Never</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="exportBtn" class="action-btn">Export</button>
+                <a id="dashboardBtn" href="#" class="action-btn primary">Dashboard</a>
+            </div>
+        </div>
         
+        <script src="popup.js"></script>
     </body>
 </html>
