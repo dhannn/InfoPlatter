@@ -116,7 +116,7 @@
             
             // Extract timestamp
             const timeElement = tweetElement.querySelector('time');
-            const timestamp = timeElement ? timeElement.getAttribute('datetime') : new Date().toISOString();
+            const timestamp = timeElement ? timeElement.getAttribute('datetime'): new Date().toISOString();
             
             // Extract tweet link
             let tweetLink = '';

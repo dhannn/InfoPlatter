@@ -1,4 +1,5 @@
 let isCapturing = true;
+let dev = false;
 
 // Initialize extension
 chrome.runtime.onInstalled.addListener(() => {
@@ -8,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.get(['dataPerms'], (result) => {
         if (!result.dataPerms) {
             chrome.tabs.create({
-                url: 'http://localhost:3000/dashboard'
+                url: dev? 'http://localhost:3000/dashboard': 'https://infoplatter.vercel.app/dashboard'
             })
         }
     })
